@@ -1,16 +1,16 @@
 package com.example;
-import org.glassfish.tyrus.server.Server;
-
-import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
+
+// deployment using a java EE container????
 
 @ServerEndpoint("/chat")
 public class WebSocketServer {
-
-    private static Set<Session> sessions = new HashSet<>();
+    private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<>());
 
     @OnOpen
     public void onOpen(Session session) {
@@ -45,24 +45,6 @@ public class WebSocketServer {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    public static void main(String[] args) {
-        Server server = new Server.Builder()
-                .host("localhost")
-                .port(8080)
-                .contextPath("/websocket")
-                .build();        
-        
-        try {
-            server.start();
-            System.out.println("WebSocket server started...");
-            Thread.currentThread().join(); // Keep the main thread alive
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            server.stop();
         }
     }
 }
