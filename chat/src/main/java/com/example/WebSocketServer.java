@@ -1,4 +1,6 @@
 package com.example;
+import org.glassfish.tyrus.server.Server;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
@@ -43,6 +45,24 @@ public class WebSocketServer {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public static void main(String[] args) {
+        Server server = new Server.Builder()
+                .host("localhost")
+                .port(8080)
+                .contextPath("/websocket")
+                .build();        
+        
+        try {
+            server.start();
+            System.out.println("WebSocket server started...");
+            Thread.currentThread().join(); // Keep the main thread alive
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            server.stop();
         }
     }
 }

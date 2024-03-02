@@ -1,4 +1,4 @@
-package chat.src.test.java.com.example;
+package com.example;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

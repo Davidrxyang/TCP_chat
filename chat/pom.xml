@@ -19,5 +19,10 @@
       <artifactId>javax.websocket-api</artifactId>
       <version>1.1</version> <!-- or the version you prefer -->
     </dependency>
+    <dependency>
+        <groupId>org.glassfish.tyrus</groupId>
+        <artifactId>tyrus-server</artifactId>
+        <version>1.17</version> <!-- Or the latest version -->
+    </dependency>
   </dependencies>
 </project>
