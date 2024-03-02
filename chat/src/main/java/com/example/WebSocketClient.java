@@ -1,8 +1,9 @@
 package com.example;
-import javax.websocket.*;
-import java.io.IOException;
+import javax.websocket.ClientEndpoint;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Scanner;
 
 @ClientEndpoint
@@ -12,7 +13,7 @@ public class WebSocketClient {
 
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println("Connected to server.");
+        System.out.println("Connected to server");
         this.session = session;
     }
 
@@ -21,33 +22,27 @@ public class WebSocketClient {
         System.out.println("Message from server: " + message);
     }
 
-    @OnClose
-    public void onClose() {
-        System.out.println("Connection closed.");
-    }
-
     public void sendMessage(String message) {
         try {
             session.getBasicRemote().sendText(message);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) throws URISyntaxException {
-        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        String uri = "ws://localhost:8080/chat";
+    public static void main(String[] args) throws Exception {
+        javax.websocket.WebSocketContainer container = javax.websocket.ContainerProvider.getWebSocketContainer();
+        String uri = "ws://localhost:8080/chat"; // Replace with your WebSocket server URI
 
         try {
-            Session session = container.connectToServer(WebSocketClient.class, new URI(uri));
+            Session session = container.connectToServer(WebSocketClient.class, URI.create(uri));
 
-            // Read messages from console and send to server
             Scanner scanner = new Scanner(System.in);
             while (true) {
                 String message = scanner.nextLine();
                 session.getBasicRemote().sendText(message);
             }
-        } catch (DeploymentException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
